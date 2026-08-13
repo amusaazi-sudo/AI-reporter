@@ -27,7 +27,7 @@ def test_get_weather(mock_get):
         "current": {
             "temperature_2m": 26.3,
             "relative_humidity_2m": 59,
-            "wind_speed_10m": 2.7
+            "wind_speed_10m": 2.7,
         }
     }
 
@@ -52,18 +52,15 @@ def test_get_news(mock_get):
         "articles": [
             {
                 "title": "Test News Headline",
-                "description": "This is a test news description."
+                "description": "This is a test news description.",
             }
-        ]
+        ],
     }
 
     mock_response.raise_for_status.return_value = None
     mock_get.return_value = mock_response
 
-    with patch.dict(
-        "os.environ",
-        {"NEWS_API_KEY": "fake-news-key"}
-    ):
+    with patch.dict("os.environ", {"NEWS_API_KEY": "fake-news-key"}):
         result = ai_reporter.get_news()
 
     assert len(result) == 1
@@ -83,23 +80,15 @@ def test_send_email(mock_smtp):
         "os.environ",
         {
             "GMAIL_ADDRESS": "sender@gmail.com",
-            "GMAIL_APP_PASSWORD": "fake-app-password"
-        }
+            "GMAIL_APP_PASSWORD": "fake-app-password",
+        },
     ):
         ai_reporter.send_email(
-            "recipient@gmail.com",
-            "Test Subject",
-            "This is a test email."
+            "recipient@gmail.com", "Test Subject", "This is a test email."
         )
 
-    mock_smtp.assert_called_once_with(
-        "smtp.gmail.com",
-        465
-    )
+    mock_smtp.assert_called_once_with("smtp.gmail.com", 465)
 
-    mock_server.login.assert_called_once_with(
-        "sender@gmail.com",
-        "fake-app-password"
-    )
+    mock_server.login.assert_called_once_with("sender@gmail.com", "fake-app-password")
 
     mock_server.send_message.assert_called_once()

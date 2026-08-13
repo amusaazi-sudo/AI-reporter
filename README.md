@@ -25,7 +25,7 @@ The project demonstrates API integration, AI processing, email automation, envir
 - **Pytest** — Runs automated tests
 - **unittest.mock** — Mocks external services during testing
 - **python-dotenv** — Loads environment variables from `.env`
-
+**Black** Python code formatter used to maintain consistent PEP 8-style formatting
 ---
 
 ## Project Structure

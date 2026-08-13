@@ -19,6 +19,7 @@ def validate_report_type(report_type):
     """Check if the report type is supported."""
     return report_type in ["weather", "news_summary"]
 
+
 def get_weather():
     """Get current weather information."""
 
@@ -28,7 +29,7 @@ def get_weather():
         "latitude": 0.3,
         "longitude": 32.6,
         "current": "temperature_2m,relative_humidity_2m,wind_speed_10m",
-        "timezone": "Africa/Kampala"
+        "timezone": "Africa/Kampala",
     }
 
     response = requests.get(url, params=params)
@@ -36,6 +37,7 @@ def get_weather():
     response.raise_for_status()
 
     return response.json()
+
 
 def get_news():
     """Get top news headlines from NewsAPI."""
@@ -47,28 +49,19 @@ def get_news():
 
     url = "https://newsapi.org/v2/top-headlines"
 
-    params = {
-        "country": "us",
-        "apiKey": api_key,
-        "pageSize": 5
-    }
+    params = {"country": "us", "apiKey": api_key, "pageSize": 5}
 
-    response = requests.get(
-        url,
-        params=params,
-        timeout=10
-    )
+    response = requests.get(url, params=params, timeout=10)
 
     response.raise_for_status()
 
     data = response.json()
 
     if data.get("status") != "ok":
-        raise ValueError(
-            data.get("message", "News API returned an error.")
-        )
+        raise ValueError(data.get("message", "News API returned an error."))
 
     return data["articles"]
+
 
 def generate_report(report_type, data):
     """Use OpenRouter AI to create a human-readable report."""
@@ -78,10 +71,7 @@ def generate_report(report_type, data):
     if not api_key:
         raise ValueError("OPENROUTER_API_KEY is not set.")
 
-    client = OpenAI(
-        base_url="https://openrouter.ai/api/v1",
-        api_key=api_key
-    )
+    client = OpenAI(base_url="https://openrouter.ai/api/v1", api_key=api_key)
 
     if report_type == "weather":
         prompt = f"""
@@ -115,16 +105,12 @@ News data:
 
     response = client.chat.completions.create(
         model="openai/gpt-4.1",
-        messages=[
-            {
-                "role": "user",
-                "content": prompt
-            }
-        ],
+        messages=[{"role": "user", "content": prompt}],
         max_tokens=500,
     )
 
     return response.choices[0].message.content
+
 
 def send_email(recipient, subject, body):
     """Send the report to the recipient using Gmail."""
@@ -148,6 +134,7 @@ def send_email(recipient, subject, body):
         server.login(sender, app_password)
         server.send_message(message)
 
+
 def main():
     """Run the program."""
 
@@ -170,36 +157,22 @@ def main():
         if report_type == "weather":
             weather = get_weather()
 
-            report = generate_report(
-                "weather",
-                weather
-            )
+            report = generate_report("weather", weather)
 
             print(report)
 
-            send_email(
-                email,
-                "AI Weather Report",
-                report
-                )
+            send_email(email, "AI Weather Report", report)
             print("Weather report sent successfully.")
 
         elif report_type == "news_summary":
             news = get_news()
 
-            report = generate_report(
-                "news_summary",
-                news
-            )
+            report = generate_report("news_summary", news)
 
             print(report)
 
-            send_email(
-                email,
-                "AI News Summary",
-                report
-                )
-            
+            send_email(email, "AI News Summary", report)
+
             print("News report sent successfully.")
 
     except AuthenticationError:
@@ -219,7 +192,8 @@ def main():
 
     except smtplib.SMTPException as error:
         print("Could not send the email.")
-        print(f"Error: {error}")  
+        print(f"Error: {error}")
+
 
 if __name__ == "__main__":
     main()
