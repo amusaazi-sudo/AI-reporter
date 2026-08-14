@@ -9,7 +9,6 @@ from dotenv import load_dotenv
 
 from ai_prompt import report_prompt
 
-
 load_dotenv()
 
 
@@ -65,9 +64,7 @@ def get_news():
     data = response.json()
 
     if data.get("status") != "ok":
-        raise ValueError(
-            data.get("message", "News API returned an error.")
-        )
+        raise ValueError(data.get("message", "News API returned an error."))
 
     return data["articles"]
 
@@ -166,7 +163,7 @@ def main():
             print("News report sent successfully.")
 
     except AuthenticationError:
-        print("OpenRouter authentication failed.")
+        print("OpenRouter authentication failed.Please check your OPENROUTER_API_KEY.")
         print("Please check your OPENROUTER_API_KEY.")
 
     except APIError as error:
