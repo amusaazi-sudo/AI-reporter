@@ -7,6 +7,9 @@ from email.mime.text import MIMEText
 from openai import OpenAI, APIError, AuthenticationError
 from dotenv import load_dotenv
 
+from ai_prompt import report_prompt
+
+
 load_dotenv()
 
 
@@ -49,7 +52,11 @@ def get_news():
 
     url = "https://newsapi.org/v2/top-headlines"
 
-    params = {"country": "us", "apiKey": api_key, "pageSize": 5}
+    params = {
+        "country": "us",
+        "apiKey": api_key,
+        "pageSize": 5,
+    }
 
     response = requests.get(url, params=params, timeout=10)
 
@@ -58,7 +65,9 @@ def get_news():
     data = response.json()
 
     if data.get("status") != "ok":
-        raise ValueError(data.get("message", "News API returned an error."))
+        raise ValueError(
+            data.get("message", "News API returned an error.")
+        )
 
     return data["articles"]
 
@@ -71,41 +80,21 @@ def generate_report(report_type, data):
     if not api_key:
         raise ValueError("OPENROUTER_API_KEY is not set.")
 
-    client = OpenAI(base_url="https://openrouter.ai/api/v1", api_key=api_key)
+    client = OpenAI(
+        base_url="https://openrouter.ai/api/v1",
+        api_key=api_key,
+    )
 
-    if report_type == "weather":
-        prompt = f"""
-Create a short and friendly weather report.
-
-Include:
-- Temperature
-- Humidity
-- Wind speed
-- A simple practical suggestion
-
-Use only the information provided.
-
-Weather data:
-{data}
-"""
-
-    elif report_type == "news_summary":
-        prompt = f"""
-Create a short and easy-to-read news summary.
-
-For each important story:
-- Give the headline
-- Give a short 1-2 sentence summary
-
-Do not invent information.
-
-News data:
-{data}
-"""
+    prompt = report_prompt(report_type, data)
 
     response = client.chat.completions.create(
         model="openai/gpt-4.1",
-        messages=[{"role": "user", "content": prompt}],
+        messages=[
+            {
+                "role": "user",
+                "content": prompt,
+            }
+        ],
         max_tokens=500,
     )
 
@@ -162,6 +151,7 @@ def main():
             print(report)
 
             send_email(email, "AI Weather Report", report)
+
             print("Weather report sent successfully.")
 
         elif report_type == "news_summary":
