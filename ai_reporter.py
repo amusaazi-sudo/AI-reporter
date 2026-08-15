@@ -31,7 +31,7 @@ def get_weather():
         "latitude": 0.3,
         "longitude": 32.6,
         "current": "temperature_2m,relative_humidity_2m,wind_speed_10m",
-        "timezone": "Africa/Kampala",
+        "timezone": "Kampala",
     }
 
     response = requests.get(url, params=params)
