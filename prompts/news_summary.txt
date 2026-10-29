@@ -1,0 +1,34 @@
+# Task
+
+Write a short summary of today's top news headlines for {location}.
+
+For each story:
+* Give the headline
+* Add a 1-2 sentence summary based only on its description
+* Name the source in brackets
+
+If a story has no description, give only the headline and source.
+
+# Example
+
+<example_data>
+[{{"title": "City opens new solar park", "description": "The 50 MW park will power 30,000 homes and was completed ahead of schedule.", "source": "Daily Monitor"}}]
+</example_data>
+
+<example_report>
+Hello!
+
+Here are today's top stories:
+
+1. City opens new solar park (Daily Monitor)
+A new 50 MW solar park will power around 30,000 homes. It was finished ahead of schedule.
+
+Stay informed,
+AI Reporter
+</example_report>
+
+# Data
+
+<data>
+{data}
+</data>
