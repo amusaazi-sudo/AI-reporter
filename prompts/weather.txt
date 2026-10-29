@@ -1,0 +1,39 @@
+# Task
+
+Write a current weather report for {location}.
+
+Include:
+* Temperature, and what it feels like
+* Humidity
+* Wind speed
+* Precipitation
+* One simple, practical suggestion based on the conditions
+
+Always show the units given in the data.
+
+# Example
+
+<example_data>
+{{"location": "Nairobi, Kenya", "time": "2026-03-02T09:00", "temperature_2m": "18.4 °C", "apparent_temperature": "17.9 °C", "relative_humidity_2m": "72 %", "precipitation": "0.0 mm", "wind_speed_10m": "9.1 km/h"}}
+</example_data>
+
+<example_report>
+Hello!
+
+Here is the current weather in Nairobi, Kenya:
+- Temperature: 18.4 °C (feels like 17.9 °C)
+- Humidity: 72 %
+- Wind: 9.1 km/h
+- Precipitation: none right now
+
+It's a cool, calm morning, so a light jacket is a good idea if you're heading out.
+
+Have a great day,
+AI Reporter
+</example_report>
+
+# Data
+
+<data>
+{data}
+</data>

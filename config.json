@@ -1,0 +1,32 @@
+{
+  "ai": {
+    "base_url": "https://openrouter.ai/api/v1",
+    "model": "openai/gpt-4.1",
+    "temperature": 0.3,
+    "max_tokens": 500,
+    "timeout_seconds": 30,
+    "max_retries": 2
+  },
+  "weather": {
+    "geocoding_url": "https://geocoding-api.open-meteo.com/v1/search",
+    "forecast_url": "https://api.open-meteo.com/v1/forecast",
+    "default_city": "Kampala",
+    "current_fields": [
+      "temperature_2m",
+      "apparent_temperature",
+      "relative_humidity_2m",
+      "precipitation",
+      "wind_speed_10m"
+    ]
+  },
+  "news": {
+    "url": "https://newsapi.org/v2/top-headlines",
+    "default_country": "us",
+    "page_size": 5
+  },
+  "email": {
+    "smtp_host": "smtp.gmail.com",
+    "smtp_port": 465
+  },
+  "request_timeout_seconds": 10
+}
